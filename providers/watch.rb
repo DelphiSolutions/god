@@ -29,7 +29,7 @@ action :create do
       owner 'root'
       group 'root'
       variables(num_workers: new_resource.num_workers,
-                app_name: new_resource.num_workers,
+                app_name: new_resource.app_name,
                 group_app_name: new_resource.group_app_name,
                 user: new_resource.user,
                 group: new_resource.group,
@@ -42,24 +42,28 @@ action :create do
                 chroot: new_resource.chroot,
 
                 start_command: new_resource.start_command,
-                restart_command: new_resource.start_command,
-                stop_command: new_resource.start_command,
+                restart_command: new_resource.restart_command,
+                stop_command: new_resource.stop_command,
                 stop_signal: new_resource.stop_signal,
                 stop_timeout: new_resource.stop_timeout)
       notifies :run, "execute[#{load_watch_name}]", :delayed
     end
 
+    restart_watch_name = "ruby-god-restart-watch-#{new_resource.name}"
+    watch_path =  @current_resource.watch_path
     execute load_watch_name do
-      command "god load #{@current_resource.watch_path}"
+      command "god load #{watch_path}"
       action :nothing
-      notifies :run, "execute[#{load_watch_name}]", :delayed
+      notifies :run, "execute[#{restart_watch_name}]", :delayed
     end
 
     # We only need to restart the watch already existed
-    execute load_watch_name do
-      command "god restart #{@current_resource.group_app_name}"
+    gapp_name = @current_resource.group_app_name
+    watch_exists = @current_resource.watch_exists
+    execute restart_watch_name do
+      command "god restart #{gapp_name}"
       action :nothing
-      only_if { @current_resource.watch_exists }
+      only_if { watch_exists }
     end
   end
 end
@@ -95,6 +99,7 @@ action :delete do
     end
 
     log "[ god ] God watch watch '#{new_resource}' successfully deleted"
+    new_resource.updated_by_last_action(true)
   end
 end
 
@@ -102,16 +107,18 @@ end
 def load_current_resource
   @current_resource = Chef::Resource::GodWatch.new(new_resource.name)
   @current_resource.app_name(new_resource.app_name)
-  @current_resource.group_app_name(new_resource.app_name)
+  @current_resource.group_app_name(new_resource.group_app_name)
   @current_resource.watch_exists = god_watch_exists?(new_resource.app_name)
   @current_resource.watch_path = god_watch_path(new_resource.app_name)
+
+  @current_resource
 end
 
 private
 
 def god_watch_path(name)
   ::File.join(node['god']['include_path'],
-            name + node['god']['conf_extension'])
+              name + node['god']['conf_extension'])
 end
 
 def god_watch_exists?(name)
