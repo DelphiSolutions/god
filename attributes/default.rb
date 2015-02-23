@@ -35,4 +35,3 @@ default['god']['contact']['to_email'] = 'ops@localhost'
 # it can use to pass the setting to the app. It is a hash. All of the key values
 # will be capitalized
 default['god']['globals'] = {}
-zz

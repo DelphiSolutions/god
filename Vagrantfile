@@ -45,5 +45,13 @@ Vagrant.configure('2') do |config|
     chef.run_list = ['recipe[god::test]']
 
     chef.custom_config_path = 'vagrant-chef-solo.rb'
+
+    chef.json = {
+      god: {
+        test: {
+          remove_watch: ENV['GOD_REMOVE_WATCH'] && ENV['GOD_REMOVE_WATCH'].downcase != 'false'
+        }
+      }
+    }
   end
 end
