@@ -53,6 +53,8 @@ action :create do
     watch_path =  @current_resource.watch_path
     execute load_watch_name do
       command "god load #{watch_path}"
+      retries 3
+      retry_delay 10
       action :nothing
       notifies :run, "execute[#{restart_watch_name}]", :delayed
     end

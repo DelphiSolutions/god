@@ -19,5 +19,5 @@ god_watch 'simple-app' do
   start_command 'ruby /tmp/simple.rb'
   user 'root'
   group 'root'
-  template_sensitive false 
+  template_sensitive false
 end

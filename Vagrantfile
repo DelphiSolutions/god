@@ -32,7 +32,7 @@ Vagrant.configure('2') do |config|
 
   # If you want provision without the chef server
   config.vm.provision :chef_zero do |chef|
-    chef.version = '11.18.6'
+    chef.version = '11.16.4'
     chef.install = true
 
     chef.log_level = ENV['CHEF_LOG_LEVEL'] || 'info'
