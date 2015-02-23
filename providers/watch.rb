@@ -53,7 +53,7 @@ action :create do
     restart_watch_name = "ruby-god-restart-watch-#{new_resource.name}"
     watch_path =  @current_resource.watch_path
     execute load_watch_name do
-      command "god load #{watch_path}"
+      command "god load #{current_resource.watch_path}"
       retries 3
       retry_delay 10
       action :nothing
@@ -64,9 +64,9 @@ action :create do
     gapp_name = @current_resource.group_app_name
     watch_exists = @current_resource.watch_exists
     execute restart_watch_name do
-      command "god restart #{gapp_name}"
+      command "god restart #{current_resource.group_app_name}"
       action :nothing
-      only_if { watch_exists }
+      only_if { current_resource.watch_exists }
     end
   end
 end
@@ -85,18 +85,20 @@ action :delete do
 
   converge_by("[ god ] Deleting the god watch: #{new_resource}") do
     # Stop the watch
+    group_app_name = @current_resource.group_app_name
     execute "ruby-god-stop-watch-#{new_resource.name}" do
-      command "god stop #{@current_resource.group_app_name}"
+      command "god stop #{current_resource.group_app_name}"
     end
 
     # Remove the watch
     execute "ruby-god-remove-watch-#{new_resource.name}" do
-      command "god remove #{@current_resource.group_app_name}"
+      command "god remove #{group_app_name}"
     end
 
     # Delete the watch file
+    watch_path = @current_resource.watch_path
     file "ruby-god-delete-watch-#{new_resource.name}" do
-      path @current_resource.watch_path
+      path watch_path
       sensitive new_resource.template_sensitive
       action :delete
     end
