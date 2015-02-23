@@ -20,6 +20,7 @@ action :create do
 
   converge_by("[ god ] Creating or updating god watch: #{new_resource}") do
     load_watch_name = "ruby-god-load-watch-#{new_resource.name}"
+    watch_delay  = new_resource.start_watch_immediately ? :immediately : :delayed
 
     template @current_resource.watch_path do
       source new_resource.template_name
@@ -46,7 +47,7 @@ action :create do
                 stop_command: new_resource.stop_command,
                 stop_signal: new_resource.stop_signal,
                 stop_timeout: new_resource.stop_timeout)
-      notifies :run, "execute[#{load_watch_name}]", :delayed
+      notifies :run, "execute[#{load_watch_name}]", watch_delay
     end
 
     restart_watch_name = "ruby-god-restart-watch-#{new_resource.name}"
@@ -56,7 +57,7 @@ action :create do
       retries 3
       retry_delay 10
       action :nothing
-      notifies :run, "execute[#{restart_watch_name}]", :delayed
+      notifies :run, "execute[#{restart_watch_name}]", watch_delay
     end
 
     # We only need to restart the watch already existed

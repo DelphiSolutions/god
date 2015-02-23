@@ -23,6 +23,7 @@ attribute :stop_signal, kind_of: String, default: 'SIGKILL'
 attribute :stop_timeout, kind_of: Fixnum, default: 30
 
 attribute :watch_interval, kind_of: Fixnum, default: 15
+attribute :start_watch_immediately, kind_of: [TrueClass, FalseClass], default: false
 
 attribute :template_name, kind_of: String, default: 'watch.god.rb.erb'
 attribute :template_cookbook_source, kind_of: String, default: 'god'

@@ -17,7 +17,19 @@ end
 
 god_watch 'simple-app' do
   start_command 'ruby /tmp/simple.rb'
+  working_directory '/tmp'
+
   user 'root'
   group 'root'
   template_sensitive false
+end
+
+if node['god']['test']['remove_watch'] # ~FC023
+  god_watch 'simple-app' do
+    user 'root'
+    group 'root'
+    template_sensitive false
+
+    action :delete
+  end
 end
