@@ -3,7 +3,7 @@ God Cookbook Changelog
 1.1.0 - 02/19/2015
 ------------------
 ### Improvements
-* Added LWRP for creating a god service
+* Added LWRP for creating and deleting god services
 * Brought it up to standard
 
 1.0.2
