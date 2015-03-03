@@ -5,7 +5,9 @@ include_recipe 'god::default'
 ruby_script = <<SCRIPT
 loop do
   puts 'God testing . . .'
+  puts '. . . cools'
   sleep 1
+  $stdout.flush
 end
 
 SCRIPT
@@ -17,7 +19,7 @@ end
 
 god_watch 'simple-app' do
   start_command 'ruby /tmp/simple.rb'
-  working_directory '/tmp'
+  working_directory '/tmp/'
 
   user 'root'
   group 'root'
@@ -25,6 +27,13 @@ god_watch 'simple-app' do
 end
 
 if node['god']['test']['remove_watch'] # ~FC023
+  log 'Sleeping for 45 seconds'
+  ruby_block 'ruby-god-test-remove-watch' do
+    block do
+      sleep(45)
+    end
+  end
+
   god_watch 'simple-app' do
     user 'root'
     group 'root'

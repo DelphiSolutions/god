@@ -57,17 +57,10 @@ when 'runit'
   runit_service 'god'
 
 else
-  include_recipe 'upstart'
   upstart_job 'god' do
     description 'Starts the ruby God processor monitor'
     environment(node['god']['upstart']['environment'])
     exec "/usr/local/bin/god -D -c #{node['god']['master_conf_path']} #{node['god']['upstart']['execute_options']}"
     action :create
-  end
-
-  service 'god' do
-    provider Chef::Provider::Service::Upstart
-    supports status: true, restart: true, stop: true
-    action [:enable, :start]
   end
 end

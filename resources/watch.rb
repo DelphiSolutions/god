@@ -19,7 +19,7 @@ attribute :chroot, kind_of: String, default: nil
 attribute :start_command, kind_of: String, required: true
 attribute :restart_command, kind_of: String, default: nil
 attribute :stop_command, kind_of: String, default: nil
-attribute :stop_signal, kind_of: String, default: 'SIGKILL'
+attribute :stop_signal, kind_of: String, default: 'KILL'
 attribute :stop_timeout, kind_of: Fixnum, default: 30
 
 attribute :watch_interval, kind_of: Fixnum, default: 15

@@ -8,20 +8,26 @@ end
 
 # Creates a god watch
 action :create do
-  converge_by("[ god ] Creating log directory #{new_resource.log_base_dir}") do
+  msg = "[ god ] Creating log directory #{new_resource.log_base_dir}"
+  converge_by(msg) do
     directory "ruby-god-create-log-dir-#{new_resource.log_base_dir}" do
       path new_resource.log_base_dir
       recursive true
       owner new_resource.user
       group new_resource.group
       mode '0755'
+      notifies :write, "log[#{msg}]", :immediately
+    end
+
+    log msg do
+      action :nothing
     end
   end
 
   converge_by("[ god ] Creating or updating god watch: #{new_resource}") do
     load_watch_name = "ruby-god-load-watch-#{new_resource.name}"
     watch_delay  = new_resource.start_watch_immediately ? :immediately : :delayed
-
+    msg = "[ god ] Creating or updating god watch template: #{new_resource}"
     template @current_resource.watch_path do
       source new_resource.template_name
       cookbook new_resource.template_cookbook_source
@@ -47,26 +53,39 @@ action :create do
                 stop_command: new_resource.stop_command,
                 stop_signal: new_resource.stop_signal,
                 stop_timeout: new_resource.stop_timeout)
+
+      notifies :write, "log[#{msg}]", :immediately
       notifies :run, "execute[#{load_watch_name}]", watch_delay
+    end
+    log msg do
+      action :nothing
     end
 
     restart_watch_name = "ruby-god-restart-watch-#{new_resource.name}"
-    watch_path =  @current_resource.watch_path
+    msg = "[ god ] Loading god config '#{current_resource.watch_path}'"
     execute load_watch_name do
       command "god load #{current_resource.watch_path}"
       retries 3
       retry_delay 10
       action :nothing
+
+      notifies :write, "log[#{msg}]", :immediately
       notifies :run, "execute[#{restart_watch_name}]", watch_delay
     end
+    log msg do
+      action :nothing
+    end
 
-    # We only need to restart the watch already existed
-    gapp_name = @current_resource.group_app_name
-    watch_exists = @current_resource.watch_exists
+    # We only need to restart the watch if already exists
+    msg = "[ god ] Restarted the god watch for '#{current_resource}"
     execute restart_watch_name do
       command "god restart #{current_resource.group_app_name}"
       action :nothing
       only_if { current_resource.watch_exists }
+      notifies :run, "execute[#{restart_watch_name}]", watch_delay
+    end
+    log msg do
+      action :nothing
     end
   end
 end

@@ -13,4 +13,4 @@ recipe 'god', 'Installs god and starts it as a runit service'
 end
 
 depends 'runit', '>= 1.1.6'
-depends 'upstart'
+depends 'upstart', '~> 1.0'
