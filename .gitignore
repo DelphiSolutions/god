@@ -15,3 +15,9 @@ bin/*
 
 .kitchen/
 .kitchen.local.yml
+github_key
+
+.kitchen.yml
+
+# graph images
+*.png
