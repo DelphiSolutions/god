@@ -6,12 +6,12 @@ Vagrant.configure('2') do |config|
 
   case ENV['UBUNTU_VERSION']
   when '12.04'
-    config.vm.box = 'ubuntu-12.04-2015-02-18'
-    config.vm.box_url = 'https://s3-us-west-1.amazonaws.com/delphi-vagrant/ubuntu/12.04/og-precise-server-2015-02-18.box'
+    config.vm.box = 'ubuntu-12.04-2015-03-05'
+    config.vm.box_url = 'https://s3-us-west-1.amazonaws.com/delphi-vagrant/ubuntu/12.04/og-precise-server-2015-03-05.box'
 
   else
-    config.vm.box = 'ubuntu-14.04-2015-02-18'
-    config.vm.box_url = 'https://s3-us-west-1.amazonaws.com/delphi-vagrant/ubuntu/14.04/og-trusty-server-2015-02-18.box'
+    config.vm.box = 'ubuntu-14.04-2015-03-05'
+    config.vm.box_url = 'https://s3-us-west-1.amazonaws.com/delphi-vagrant/ubuntu/14.04/og-trusty-server-2015-03-05.box'
   end
 
   config.vm.provider :virtualbox do |vb|
