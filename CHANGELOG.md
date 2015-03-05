@@ -2,7 +2,12 @@ God Cookbook Changelog
 =======================
 1.1.0 - 02/19/2015
 ------------------
-## Breaking Changes
+### Dependency update
+* upstart 1.0 -> 1.1, for compatibility with ubuntu 12.04
+
+1.1.0 - 02/19/2015
+------------------
+### Breaking Changes
 * Removed definition for creating watches. Use LWRP instead.
 
 ### Improvements
