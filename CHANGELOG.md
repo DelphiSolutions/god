@@ -1,6 +1,6 @@
 God Cookbook Changelog
 =======================
-1.2.0 - 03/05/2015
+1.2.1 - 03/05/2015
 ------------------
 ### Dependency update
 * upstart 1.1.1 -> 1.1.2, for bug fix
