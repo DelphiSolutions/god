@@ -3,5 +3,5 @@
 
 source 'https://supermarket.chef.io'
 
-cookbook 'upstart', git: 'git@github.com:OpenGov/upstart-cookbook.git', tag: '1.1.1' # path: '../upstart-cookbook'
+cookbook 'upstart', git: 'git@github.com:OpenGov/upstart-cookbook.git', tag: '1.1.2' # path: '../upstart-cookbook'
 metadata
