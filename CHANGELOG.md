@@ -1,5 +1,13 @@
 God Cookbook Changelog
 =======================
+1.3.1 - 03/06/2015
+------------------
+### Bug Fix
+* Should not use `return` statements inside LWRPs, causes local jump errors
+
+### Dependency update
+* upstart 1.2.0 -> 1.2.1, for bug fix
+
 1.3.0 - 03/05/2015
 ------------------
 ### Dependency update

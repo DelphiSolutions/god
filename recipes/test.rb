@@ -42,3 +42,12 @@ if node['god']['test']['remove_watch'] # ~FC023
     action :delete
   end
 end
+
+log 'Attempting to delete non-existent god job'
+god_watch 'fake-app' do
+  user 'nobody'
+  group 'nogroup'
+  template_sensitive false
+
+  action :delete
+end
