@@ -92,38 +92,37 @@ end
 
 # Removes a god watch
 action :delete do
-  unless @current_resource.watch_exists
+  if @current_resource.watch_exists
+    converge_by("[ god ] Deleting the god watch: #{new_resource}") do
+      # Stop the watch
+      group_app_name = @current_resource.group_app_name
+      execute "ruby-god-stop-watch-#{new_resource.name}" do
+        command "god stop #{current_resource.group_app_name}"
+      end
+
+      # Remove the watch
+      execute "ruby-god-remove-watch-#{new_resource.name}" do
+        command "god remove #{group_app_name}"
+      end
+
+      # Delete the watch file
+      watch_path = @current_resource.watch_path
+      file "ruby-god-delete-watch-#{new_resource.name}" do
+        path watch_path
+        sensitive new_resource.template_sensitive
+        action :delete
+      end
+
+      log "[ god ] God watch watch '#{new_resource}' successfully deleted"
+      new_resource.updated_by_last_action(true)
+    end
+  else
+
     converge_by("[ god ] Not deleting the god watch because it doesn't exist: #{new_resource}") do
       log "[ god ] Can not delete god watch '#{new_resource}' because it does not exist" do
         level :warn
       end
     end
-
-    return
-  end
-
-  converge_by("[ god ] Deleting the god watch: #{new_resource}") do
-    # Stop the watch
-    group_app_name = @current_resource.group_app_name
-    execute "ruby-god-stop-watch-#{new_resource.name}" do
-      command "god stop #{current_resource.group_app_name}"
-    end
-
-    # Remove the watch
-    execute "ruby-god-remove-watch-#{new_resource.name}" do
-      command "god remove #{group_app_name}"
-    end
-
-    # Delete the watch file
-    watch_path = @current_resource.watch_path
-    file "ruby-god-delete-watch-#{new_resource.name}" do
-      path watch_path
-      sensitive new_resource.template_sensitive
-      action :delete
-    end
-
-    log "[ god ] God watch watch '#{new_resource}' successfully deleted"
-    new_resource.updated_by_last_action(true)
   end
 end
 
