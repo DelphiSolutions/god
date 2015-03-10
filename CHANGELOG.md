@@ -1,5 +1,10 @@
 God Cookbook Changelog
 =======================
+1.3.2 - 03/10/2015
+------------------
+### Improvement
+* Master god config file should be not have executable bit set
+
 1.3.1 - 03/06/2015
 ------------------
 ### Bug Fix

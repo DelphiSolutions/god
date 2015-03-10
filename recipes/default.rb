@@ -44,7 +44,7 @@ template node['god']['master_conf_path'] do
   source 'master.god.erb'
   owner 'root'
   group 'root'
-  mode '0755'
+  mode '0640'
   variables(email_settings: node['god']['email'],
             contact: node['god']['contact'],
             globals: node['god']['globals'],
