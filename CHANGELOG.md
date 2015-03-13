@@ -1,5 +1,10 @@
 God Cookbook Changelog
 =======================
+1.3.3 - 03/12/2015
+------------------
+### Improvement
+* Set default stop signal for god_watch resource to `SIGTERM`
+
 1.3.2 - 03/10/2015
 ------------------
 ### Improvement
