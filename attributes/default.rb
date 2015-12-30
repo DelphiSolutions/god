@@ -7,13 +7,13 @@ default['god']['bin_path'] = '/usr/local/bin/god'
 
 # God gem settings
 default['god']['ruby']['deb_version'] = '1.9.1'
-default['god']['version'] = '0.13.5'
+default['god']['version'] = '0.13.7'
 
 # How you want to servicify god
 default['god']['init_style'] = 'upstart'
 default['god']['upstart']['environment']['PATH'] = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 default['god']['upstart']['environment']['LANG'] = 'en_US.UTF-8'
-default['god']['upstart']['execute_options'] = '--log-level info --no-syslog'
+default['god']['upstart']['execute_options'] = '--log-level info'
 
 # Email default settings
 default['god']['email']['from_email'] = 'god@localhost'

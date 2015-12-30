@@ -1,5 +1,17 @@
 God Cookbook Changelog
 =======================
+1.4.0 - 12/29/2015
+------------------
+### Improvemnt
+- update god version from 0.13.5 --> 0.13.7
+- send god logs to syslog
+
+### Bug Fix
+- god does not restart with new upstart configuration when upstart has changed due to race condition where Upstart does not use the new config until all job instances have been stopped
+
+### Cookbook Update
+- upstart 1.2 -> 1.3.0
+
 1.3.3 - 03/12/2015
 ------------------
 ### Improvement
